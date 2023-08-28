@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flash_chat/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +12,21 @@ class ChatScreen extends StatefulWidget {
 }
 
 class ChatScreenState extends State<ChatScreen> {
+  final _auth = FirebaseAuth.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    var loggedInUser = _auth.currentUser;
+    try {
+      if (loggedInUser != null) {
+        print(loggedInUser.email);
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,15 +60,6 @@ class ChatScreenState extends State<ChatScreen> {
                       decoration: kMessageTextFieldDecoration,
                     ),
                   ),
-                  // FlatButton(
-                  //   onPressed: () {
-                  //     //Implement send functionality.
-                  //   },
-                  //   child: Text(
-                  //     'Send',
-                  //     style: kSendButtonTextStyle,
-                  //   ),
-                  // ),
                   TextButton(
                       onPressed: () {},
                       child: const Text(

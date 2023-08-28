@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "802384217643",
+    "project_id": "flash-chat-f9848",
+    "storage_bucket": "flash-chat-f9848.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:802384217643:android:969f4f684c748e536c8c6e",
+        "android_client_info": {
+          "package_name": "com.temilola.flash_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "802384217643-uoqmj2bopmfci4hcgu1dtkd3rue33pav.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHqBTtp_8_qm3k6gpD2unOOEWWW6W6a90"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "802384217643-uoqmj2bopmfci4hcgu1dtkd3rue33pav.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
