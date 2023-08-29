@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flash_chat/components/rounded_button.dart';
 import 'package:flash_chat/constants.dart';
+import 'package:flash_chat/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -40,7 +41,7 @@ class LoginScreenState extends State<LoginScreen> {
               textAlign: TextAlign.center,
               keyboardType: TextInputType.emailAddress,
               onChanged: (value) {
-                //Do something with the user input.
+                email = value;
               },
               decoration:
                   kTextFieldDecoration.copyWith(hintText: 'Enter your email'),
@@ -52,7 +53,7 @@ class LoginScreenState extends State<LoginScreen> {
               textAlign: TextAlign.center,
               obscureText: true,
               onChanged: (value) {
-                //Do something with the user input.
+                password = value;
               },
               decoration: kTextFieldDecoration.copyWith(
                   hintText: 'Enter your password.'),
@@ -63,8 +64,15 @@ class LoginScreenState extends State<LoginScreen> {
             RoundedButton(
               buttonText: 'Log in',
               color: Colors.lightBlueAccent,
-              onPressed: () {
-                //Go to registration screen.
+              onPressed: () async {
+                try {
+                  var user = await _auth.signInWithEmailAndPassword(
+                      email: email, password: password);
+                  if (!mounted) return;
+                  Navigator.of(context).pushNamed(ChatScreen.id);
+                } catch (e) {
+                  print(e);
+                }
               },
             ),
           ],
