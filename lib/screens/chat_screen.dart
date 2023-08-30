@@ -1,9 +1,11 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flash_chat/constants.dart';
 import 'package:flutter/material.dart';
 
 final _firestore = FirebaseFirestore.instance;
+late User loggedInUser;
 
 class ChatScreen extends StatefulWidget {
   static const String id = "chat_screen";
@@ -17,7 +19,6 @@ class ChatScreen extends StatefulWidget {
 class ChatScreenState extends State<ChatScreen> {
   final _auth = FirebaseAuth.instance;
   late String messageText;
-  late User loggedInUser;
   final textEditingController = TextEditingController();
 
   @override
@@ -58,7 +59,7 @@ class ChatScreenState extends State<ChatScreen> {
                 // messageStream();
               }),
         ],
-        title: const Text('⚡️Chat'),
+        title: const Text('⚡️Group Chat'),
         backgroundColor: Colors.lightBlueAccent,
       ),
       body: SafeArea(
@@ -125,8 +126,11 @@ class MessageStreams extends StatelessWidget {
             final messageText = message['text'];
             final senderEmail = message['sender'];
 
-            final messageWidget =
-                MessageBubble(textMessage: messageText, email: senderEmail);
+            final messageWidget = MessageBubble(
+              textMessage: messageText,
+              email: senderEmail,
+              isMe: loggedInUser.email == senderEmail,
+            );
 
             messageBubble.add(messageWidget);
           }
@@ -141,20 +145,23 @@ class MessageStreams extends StatelessWidget {
 
 class MessageBubble extends StatelessWidget {
   const MessageBubble({
-    super.key,
+    Key? key,
     required this.textMessage,
     required this.email,
-  });
+    required this.isMe,
+  }) : super(key: key);
 
   final String textMessage;
   final String email;
+  final bool isMe;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment:
+            isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           Text(
             email,
@@ -165,16 +172,23 @@ class MessageBubble extends StatelessWidget {
           ),
           Material(
             elevation: 5.0,
-            borderRadius: BorderRadius.circular(20.0),
-            color: Colors.lightBlueAccent,
+            borderRadius: BorderRadius.only(
+              topLeft:
+                  isMe ? const Radius.circular(30.0) : const Radius.circular(0),
+              bottomLeft: const Radius.circular(30.0),
+              bottomRight: const Radius.circular(30.0),
+              topRight:
+                  isMe ? const Radius.circular(0) : const Radius.circular(30.0),
+            ),
+            color: isMe ? Colors.lightBlueAccent : Colors.white,
             child: Padding(
               padding:
                   const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
               child: Text(
                 textMessage,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 15.0,
-                  color: Colors.white,
+                  color: isMe ? Colors.white : Colors.black54,
                 ),
               ),
             ),
