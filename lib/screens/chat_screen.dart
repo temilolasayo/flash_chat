@@ -34,6 +34,16 @@ class ChatScreenState extends State<ChatScreen> {
     }
   }
 
+  void messageStream() async {
+    await for (var snapshot in _firestore.collection('messages').snapshots()) {
+      for (var messageList in snapshot.docs) {
+        print("hello");
+
+        print(messageList.data());
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +54,8 @@ class ChatScreenState extends State<ChatScreen> {
               icon: const Icon(Icons.close),
               onPressed: () {
                 //Logout
-                _auth.signOut();
+                //_auth.signOut();
+                messageStream();
               }),
         ],
         title: const Text('⚡️Chat'),
@@ -74,7 +85,6 @@ class ChatScreenState extends State<ChatScreen> {
                           "text": messageText,
                           "sender": loggedInUser.email,
                         });
-                        print("Logged in user is: ${loggedInUser.email}");
                       },
                       child: const Text(
                         'Send',
